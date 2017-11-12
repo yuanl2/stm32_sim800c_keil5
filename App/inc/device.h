@@ -31,17 +31,17 @@ enum
 	DEVICEn,
 };
 
-#define DEVICE_PIN                         GPIO_Pin_5
-#define DEVICE_GPIO_PORT                   GPIOA
-#define DEVICE_GPIO_PORT_CLK               RCC_APB2Periph_GPIOA
+#define DEVICE_PIN                         GPIO_Pin_4
+#define DEVICE_GPIO_PORT                   GPIOG
+#define DEVICE_GPIO_PORT_CLK               RCC_APB2Periph_GPIOG
 
-#define DEVICE_BUSY_PIN                         GPIO_Pin_6
-#define DEVICE_BUSY_GPIO_PORT                   GPIOA
-#define DEVICE_BUSY_GPIO_PORT_CLK               RCC_APB2Periph_GPIOA
+#define DEVICE_BUSY_PIN                         GPIO_Pin_3
+#define DEVICE_BUSY_GPIO_PORT                   GPIOG
+#define DEVICE_BUSY_GPIO_PORT_CLK               RCC_APB2Periph_GPIOG
 
-#define DEVICE_STATUS_PIN                         GPIO_Pin_7
-#define DEVICE_STATUS_GPIO_PORT                   GPIOA
-#define DEVICE_STATUS_GPIO_PORT_CLK               RCC_APB2Periph_GPIOA
+#define DEVICE_STATUS_PIN                         GPIO_Pin_2
+#define DEVICE_STATUS_GPIO_PORT                   GPIOG
+#define DEVICE_STATUS_GPIO_PORT_CLK               RCC_APB2Periph_GPIOG
 
 enum 
 {

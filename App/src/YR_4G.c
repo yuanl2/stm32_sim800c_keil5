@@ -241,11 +241,11 @@ const char *msg_device="100";
 #define LINKA_GPIO_PORT                   GPIOF
 #define LINKA_GPIO_PORT_CLK               RCC_APB2Periph_GPIOF
 
-#define LINKB_PIN                         GPIO_Pin_7
+#define LINKB_PIN                         GPIO_Pin_12
 #define LINKB_GPIO_PORT                   GPIOF
 #define LINKB_GPIO_PORT_CLK               RCC_APB2Periph_GPIOF
 
-#define WORK_PIN                         GPIO_Pin_8
+#define WORK_PIN                         GPIO_Pin_13
 #define WORK_GPIO_PORT                   GPIOF
 #define WORK_GPIO_PORT_CLK               RCC_APB2Periph_GPIOF
 
@@ -287,8 +287,8 @@ void trimStr(char *dst, char *src, u8 ackId)
 
 bool isWorking(void)
 {
-	return TRUE;
-	//return (GPIO_ReadOutputDataBit(WORK_GPIO_PORT, WORK_PIN)==1?TRUE:FALSE);
+	//return TRUE;
+	return (GPIO_ReadOutputDataBit(WORK_GPIO_PORT, WORK_PIN)==0?TRUE:FALSE);
 }
 
 char *DumpQueue(char * recv)
@@ -398,6 +398,8 @@ bool GetSysinfo(void)
 	char recv[MAXSIZE+1];	
 	bool ret = FALSE;
 	u8 i=0;
+	
+	BSP_Printf("Wait 60s for network connection....\n");
 	for(i=0;i<30;i++)
 		delay_s(2);
 	
@@ -611,7 +613,7 @@ bool SocketParam(u8 rw, u8 sock, u8 *protocol, u8 *addr, u8 *port, SockSetting *
 	u8 id=AT_SOCK_PARAM;
 	char recv[MAXSIZE+1];	
 	bool ret = FALSE;
-	char cmd[10], ack[10];
+	char cmd[50], ack[50];
 	char *p;
 
 	if(rw==READ)
@@ -637,7 +639,7 @@ bool SocketParam(u8 rw, u8 sock, u8 *protocol, u8 *addr, u8 *port, SockSetting *
 				if(p)
 					strcpy(pSocketSetting->port, p);
 
-				BSP_Printf("Sock[%c]: Protocol[%s] Addr[%s] Port[%s]\n", SocketLabel[sock], pSocketSetting->protocol, pSocketSetting->addr, pSocketSetting->port);
+				BSP_Printf("Read Sock[%c]: Protocol[%s] Addr[%s] Port[%s]\n", SocketLabel[sock], pSocketSetting->protocol, pSocketSetting->addr, pSocketSetting->port);
 				break;
 			}
 			delay_ms(1500);
@@ -646,7 +648,18 @@ bool SocketParam(u8 rw, u8 sock, u8 *protocol, u8 *addr, u8 *port, SockSetting *
 	}
 	else
 	{
-		//not implemented yet	
+		sprintf(cmd, "+SOCK%c%s=%s,%s,%s", SocketLabel[sock], atpair[id].cmd, protocol, addr, port);
+		while(retry != 0)
+		{
+			ret = YR4G_Send_Cmd(cmd,"OK",recv,100);
+			if(ret)
+			{
+				BSP_Printf("Write Sock[%c]: Protocol[%s] Addr[%s] Port[%s]\n", SocketLabel[sock], protocol, addr, port);
+				break;
+			}
+			delay_ms(1500);
+			retry--;
+		}
 	}
 	
 	return ret;
@@ -670,7 +683,7 @@ bool SocketEnable(u8 rw, u8 sock, bool enable, SockSetting *pSocketSetting)
 			if(ret)
 			{
 				pSocketSetting->isOn = (strstr(recv, SocketEN[SOCK_EN])!=NULL)?TRUE:FALSE;
-				BSP_Printf("Enable[%c]: %d\n", SocketLabel[sock], pSocketSetting->isOn);
+				BSP_Printf("Read Enable[%c]: %d\n", SocketLabel[sock], pSocketSetting->isOn);
 				break;
 			}
 			delay_ms(1500);
@@ -686,7 +699,7 @@ bool SocketEnable(u8 rw, u8 sock, bool enable, SockSetting *pSocketSetting)
 			if(ret)
 			{
 				socketSetting[sock].isOn = enable;
-				BSP_Printf("Enable[%c]: %d\n", SocketLabel[sock], socketSetting[sock].isOn);
+				BSP_Printf("Write Enable[%c]: %d\n", SocketLabel[sock], socketSetting[sock].isOn);
 				break;
 			}
 			delay_ms(1500);
@@ -795,7 +808,8 @@ bool RegEnable(u8 rw, u8 sock, bool enable, SockSetting *pSocketSetting)
 	u8 id=AT_REGEN;
 	char recv[MAXSIZE+1];	
 	bool ret = FALSE;
-
+	char cmd[20];
+	
 	if(rw==READ)
 	{
 		while(retry != 0)
@@ -805,7 +819,7 @@ bool RegEnable(u8 rw, u8 sock, bool enable, SockSetting *pSocketSetting)
 			if(ret)
 			{
 				pSocketSetting->isRegEn = (strstr(recv, RegEN[REG_EN])!=NULL)?TRUE:FALSE;
-				BSP_Printf("RegEn: %d\n", pSocketSetting->isRegEn);
+				BSP_Printf("Read RegEn: %d\n", pSocketSetting->isRegEn);
 				break;
 			}
 			delay_ms(1500);
@@ -814,13 +828,14 @@ bool RegEnable(u8 rw, u8 sock, bool enable, SockSetting *pSocketSetting)
 	}
 	else
 	{
+		sprintf(cmd, "%s=%s", atpair[id].cmd,RegEN[(enable?REG_EN:REG_DIS)]);		
 		while(retry != 0)
 		{
-			ret = YR4G_Send_Cmd(atpair[id].cmd,"OK",recv,100);
+			ret = YR4G_Send_Cmd(cmd,"OK",recv,100);
 			if(ret)
 			{
 				socketSetting[sock].isRegEn = enable;
-				BSP_Printf("RegEn: %d\n", socketSetting[sock].isRegEn);
+				BSP_Printf("Write RegEn: %d\n", socketSetting[sock].isRegEn);
 				break;
 			}
 			delay_ms(1500);
@@ -837,7 +852,8 @@ bool HeartEnable(u8 rw, u8 sock, bool enable, SockSetting *pSocketSetting)
 	u8 id=AT_HEARTEN;
 	char recv[MAXSIZE+1];	
 	bool ret = FALSE;
-
+	char cmd[20];
+	
 	if(rw==READ)
 	{
 		while(retry != 0)
@@ -846,7 +862,7 @@ bool HeartEnable(u8 rw, u8 sock, bool enable, SockSetting *pSocketSetting)
 			if(ret)
 			{
 				pSocketSetting->isHeartEn = (strstr(recv, HeartEN[REG_EN])!=NULL)?TRUE:FALSE;
-				BSP_Printf("HeartEn: %d\n", pSocketSetting->isHeartEn);
+				BSP_Printf("Read HeartEn: %d\n", rw, pSocketSetting->isHeartEn);
 				break;
 			}
 			delay_ms(1500);
@@ -855,13 +871,14 @@ bool HeartEnable(u8 rw, u8 sock, bool enable, SockSetting *pSocketSetting)
 	}
 	else
 	{
+		sprintf(cmd, "%s=%s", atpair[id].cmd,HeartEN[(enable?HEART_EN:HEART_DIS)]);		
 		while(retry != 0)
 		{
-			ret = YR4G_Send_Cmd(atpair[id].cmd,"OK",recv,100);
+			ret = YR4G_Send_Cmd(cmd,"OK",recv,100);
 			if(ret)
 			{
 				socketSetting[sock].isHeartEn = enable;
-				BSP_Printf("HeartEn: %d\n", socketSetting[sock].isHeartEn);
+				BSP_Printf("Write HeartEn: %d\n", rw, socketSetting[sock].isHeartEn);
 				break;
 			}
 			delay_ms(1500);
@@ -927,9 +944,19 @@ bool YR4G_RecoverSocket(void)
 	for(i=SOCK_A; i<SOCK_MAX; i++)
 	{
 		SockSetting tSockSetting;
+		
 		ret = SocketEnable(READ, i, FALSE, &tSockSetting);
 		if(tSockSetting.isOn != socketSetting[i].isOn)
 			ret = SocketEnable(WRITE, i, socketSetting[i].isOn, NULL);
+		
+		if(socketSetting[i].isOn)
+		{
+			ret = SocketParam(READ, i, NULL, NULL, NULL, &tSockSetting);
+			if((strstr(tSockSetting.protocol, socketSetting[i].protocol) == NULL) || 
+				(strstr(tSockSetting.addr, socketSetting[i].addr) == NULL) ||
+				(strstr(tSockSetting.port, socketSetting[i].port) == NULL))
+				ret = SocketParam(WRITE, i, socketSetting[i].protocol, socketSetting[i].addr, socketSetting[i].port, NULL);
+		}
 
 		ret = RegEnable(READ, i, FALSE, &tSockSetting);
 		if(tSockSetting.isRegEn != socketSetting[i].isRegEn)
@@ -956,10 +983,10 @@ bool YR4G_Link_Server_AT(void)
 		if(ret = GetVersion())
 			if(ret = GetPassword())
 				if(ret = (GetSN() && GetICCID() && GetIMEI()))
-					if(ret = GetResetTime())					
-						if(ret = GetSysinfo())
-							if(ret = GetCSQ())					
-								if(ret = YR4G_RecoverSocket())
+					if(ret = GetResetTime())
+						if(ret = YR4G_RecoverSocket())
+							if(ret = GetSysinfo())
+								if(ret = GetCSQ())	
 								{
 									ret = FALSE;
 									BSP_Printf("Wait Connected\n");	
