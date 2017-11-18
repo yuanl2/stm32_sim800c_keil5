@@ -169,7 +169,7 @@ void Device_Timer_Status(char *buf)
 //GPIO High: IDLE; Low: BUSY
 bool isDevBusy(u8 Device)
 {
-	return (GPIO_ReadOutputDataBit(GPIO_PORT[Device][GPIO_BUSY], GPIO_PIN[Device][GPIO_BUSY])==1?FALSE:TRUE);	
+	return (GPIO_ReadInputDataBit(GPIO_PORT[Device][GPIO_BUSY], GPIO_PIN[Device][GPIO_BUSY])==1?FALSE:TRUE);	
 	//return FALSE;
 }
 
@@ -189,7 +189,7 @@ bool isAnyDevBusy(void)
 //GPIO High: ERROR; Low: WORKING
 bool isDevWorking(u8 Device)
 {
-	return (GPIO_ReadOutputDataBit(GPIO_PORT[Device][GPIO_STATUS], GPIO_PIN[Device][GPIO_STATUS])==1?FALSE:TRUE);	
+	return (GPIO_ReadInputDataBit(GPIO_PORT[Device][GPIO_STATUS], GPIO_PIN[Device][GPIO_STATUS])==1?FALSE:TRUE);	
 }
 
 void Device_GPIO_Status(char *buf)

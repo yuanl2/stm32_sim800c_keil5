@@ -110,10 +110,10 @@ int main(void)
 	while(1)
 	{
 		Device_ON(DEVICE_01);
-		BSP_Printf("Power: %d Busy: %d Working: %d\n", i, Device_Power_Status(DEVICE_01), isDevBusy(DEVICE_01), isDevWorking(DEVICE_01));
+		BSP_Printf("Power: %d Busy: %d Working: %d\n", Device_Power_Status(DEVICE_01), isDevBusy(DEVICE_01), isDevWorking(DEVICE_01));
 		delay_s(10);
 		Device_OFF(DEVICE_01);
-		BSP_Printf("Power: %d Busy: %d Working: %d\n", i, Device_Power_Status(DEVICE_01), isDevBusy(DEVICE_01), isDevWorking(DEVICE_01));
+		BSP_Printf("Power: %d Busy: %d Working: %d\n", Device_Power_Status(DEVICE_01), isDevBusy(DEVICE_01), isDevWorking(DEVICE_01));
 		delay_s(10);		
 	}
 	
