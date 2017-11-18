@@ -107,6 +107,7 @@ int main(void)
 		BSP_Printf("Power[%d]: %d\n", i, Device_Power_Status(i));
 	}
 
+/*
 	while(1)
 	{
 		Device_ON(DEVICE_01);
@@ -116,7 +117,8 @@ int main(void)
 		BSP_Printf("Power: %d Busy: %d Working: %d\n", Device_Power_Status(DEVICE_01), isDevBusy(DEVICE_01), isDevWorking(DEVICE_01));
 		delay_s(10);		
 	}
-	
+*/
+
 #if 0  //for usart2 test
 	u8 cmd[2]={0x12, 0x34};
 	while(!Device_SendCmd(cmd, sizeof(cmd), recv, 1000));
