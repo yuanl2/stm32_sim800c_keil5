@@ -3,7 +3,7 @@
 #include "stdio.h"	
 #include "sys.h" 
 
-//#define LOG_ENABLE
+#define LOG_ENABLE
 #ifdef LOG_ENABLE
 /* 这个宏仅用于调试阶段排错 */
 #define BSP_Printf		printf
@@ -11,7 +11,7 @@
 #define BSP_Printf(...)
 #endif
 
-#define SW_VERSION            "20171118TEST"
+#define SW_VERSION            "20171129"
 
 #define USART_REC_LEN  			200  	//定义最大接收字节数 200
 #define EN_USART1_RX 			   0		//使能（1）/禁止（0）串口1接收

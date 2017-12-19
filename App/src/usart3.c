@@ -31,10 +31,10 @@ void USART3_IRQHandler(void)
 		{ 
 			if(USART3_RX_STA<USART3_MAX_RECV_LEN)	//还可以接收数据
 			{
-				TIM_SetCounter(TIM7,0);             //计数器清空          				
+				TIM_SetCounter(TIM_UART3,0);             //计数器清空          				
 				if(USART3_RX_STA==0) 				        //使能定时器7的中断 
 				{
-					TIM_Cmd(TIM7,ENABLE);             //使能定时器7
+					TIM_Cmd(TIM_UART3,ENABLE);             //使能定时器7
 				}
 				USART3_RX_BUF[USART3_RX_STA++]=res;	//记录接收到的值	 
 			}else 
@@ -95,10 +95,12 @@ void usart3_init(u32 bound)
 	NVIC_Init(&NVIC_InitStructure);	//根据指定的参数初始化VIC寄存器
 	
 	
-	TIM7_Int_Init(299,2399);		//10ms中断
+	//TIM_Uart3_Init(299,2399);		//10ms中断
+	//TIM_Uart3_Init(39,1999);		//10ms中断
+	TIM_Uart3_Set(10);
 	//TIM7_Int_Init(999,2399);
 	USART3_RX_STA=0;		    	//清零
-	TIM_Cmd(TIM7,DISABLE);		//关闭定时器7
+	TIM_Cmd(TIM_UART3,DISABLE);		//关闭定时器7
 
 }
 

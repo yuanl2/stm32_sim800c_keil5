@@ -287,8 +287,8 @@ void trimStr(char *dst, char *src, u8 ackId)
 
 bool isWorking(void)
 {
-	//return TRUE;
-	return (GPIO_ReadOutputDataBit(WORK_GPIO_PORT, WORK_PIN)==0?TRUE:FALSE);
+	return TRUE;
+	//return (GPIO_ReadOutputDataBit(WORK_GPIO_PORT, WORK_PIN)==0?TRUE:FALSE);
 }
 
 char *DumpQueue(char * recv)
@@ -930,9 +930,13 @@ void YR4G_ResetRestart(void)
 	while(1)
 	{
 		delay_s(2);
-		if(DumpQueue(recv) != NULL)
-			if(strstr(recv,YR4G_STARTUP_MSG)!=NULL)
+		if(DumpQueue(recv) != NULL){
+			BSP_Printf("recv: %s\n", recv);
+			if(strstr(recv,YR4G_STARTUP_MSG)!=NULL){
+				BSP_Printf("YR4G startup successful\n");
 				break;
+			}
+		}
 	}
 }
 

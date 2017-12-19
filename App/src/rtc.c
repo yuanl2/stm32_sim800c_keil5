@@ -1,5 +1,6 @@
 #include "stm32f10x_conf.h"
 #include <stdio.h>
+#include "sys.h"
 #include "rtc.h"
 #include "usart.h"
 
@@ -7,8 +8,11 @@ void rtc_init(void)
 {
 
 	//NVIC_Configuration();
-	
-	if (BKP_ReadBackupRegister(BKP_DR1) != 0xA5A5)
+#if INTERNAL_CLOCK	
+	if(1)//(BKP_ReadBackupRegister(BKP_DR1) != 0xA5A5)
+#else
+	if(BKP_ReadBackupRegister(BKP_DR1) != 0xA5A5)
+#endif
   {
     /* Backup data register value is not correct or not yet programmed (when
        the first time the program is executed) */
@@ -91,6 +95,11 @@ void RTC_Configuration(void)
   /* Reset Backup Domain */
   BKP_DeInit();
 
+#if INTERNAL_CLOCK
+  RCC_LSICmd(ENABLE);
+  while (RCC_GetFlagStatus(RCC_FLAG_LSIRDY) == RESET);
+  RCC_RTCCLKConfig(RCC_RTCCLKSource_LSI);  
+#else
   /* Enable LSE */
   RCC_LSEConfig(RCC_LSE_ON);
   /* Wait till LSE is ready */
@@ -99,7 +108,7 @@ void RTC_Configuration(void)
 
   /* Select LSE as RTC Clock Source */
   RCC_RTCCLKConfig(RCC_RTCCLKSource_LSE);
-
+#endif
   /* Enable RTC Clock */
   RCC_RTCCLKCmd(ENABLE);
 
@@ -116,8 +125,11 @@ void RTC_Configuration(void)
   RTC_WaitForLastTask();
 
   /* Set RTC prescaler: set RTC period to 1sec */
+#if INTERNAL_CLOCK  
+  RTC_SetPrescaler(40000);
+#else
   RTC_SetPrescaler(32767); /* RTC period = RTCCLK/RTC_PR = (32.768 KHz)/(32767+1) */
-
+#endif
   /* Wait until last write operation on RTC registers has finished */
   RTC_WaitForLastTask();
 }

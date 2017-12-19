@@ -23,10 +23,10 @@ void USART2_IRQHandler(void)
 		{ 
 			if(USART2_RX_STA<USART2_MAX_RECV_LEN)	//还可以接收数据
 			{
-				TIM_SetCounter(TIM5,0);             //计数器清空          				
+				TIM_SetCounter(TIM_UART2,0);             //计数器清空          				
 				if(USART2_RX_STA==0) 				        //使能定时器5的中断 
 				{
-					TIM_Cmd(TIM5,ENABLE);             //使能定时器5
+					TIM_Cmd(TIM_UART2,ENABLE);             //使能定时器5
 				}
 				USART2_RX_BUF[USART2_RX_STA++]=res;	//记录接收到的值	 
 			}else 
@@ -84,9 +84,9 @@ void usart2_init(u32 bound)
 	NVIC_Init(&NVIC_InitStructure);	//根据指定的参数初始化VIC寄存器
 	
 	
-	TIM5_Int_Init(299,2399);		//10ms中断
+	TIM_Uart2_Init(299,2399);		//10ms中断
 	USART2_RX_STA=0;		    	//清零
-	TIM_Cmd(TIM5,DISABLE);		//关闭定时器7
+	TIM_Cmd(TIM_UART2,DISABLE);		//关闭定时器7
 }
 
 //串口2,printf 函数

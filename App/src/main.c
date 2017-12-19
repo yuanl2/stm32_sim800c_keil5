@@ -101,23 +101,38 @@ int main(void)
 	Device_Init();
 	//Device_ON(DEVICE_01);
 	//Device_ON(DEVICE_04);
-	BSP_Printf("\n\nSW VERSION: %s\n\n", SW_VERSION);
+	BSP_Printf("\n\nSW VERSION: %s Clock: %d\n\n", SW_VERSION, SystemCoreClock);
 	for(i=DEVICE_01; i<DEVICEn; i++)
 	{
 		BSP_Printf("Power[%d]: %d\n", i, Device_Power_Status(i));
 	}
 
-/*
+#if 1
+	//TIM_General_Init(29999,2399);						     // 1s中断
+	//TIM_General_Init(3999,1999);						     // 1s中断	
+	TIM_General_Set(1000);
+	TIM_SetCounter(TIM_GENERAL,0); 
+	TIM_Cmd(TIM_GENERAL,ENABLE);
+	while(1)
+	{
+		if(dev.hb_timer >= 60)
+		{
+			i = RTC_GetCounter();	
+			BSP_Printf("[%0.2d:%0.2d:%0.2d]\n", i / 3600, (i % 3600) / 60, (i % 3600) % 60);		
+			dev.hb_timer = 0;
+		}
+	}
+	
 	while(1)
 	{
 		Device_ON(DEVICE_01);
 		BSP_Printf("Power: %d Busy: %d Working: %d\n", Device_Power_Status(DEVICE_01), isDevBusy(DEVICE_01), isDevWorking(DEVICE_01));
-		delay_s(10);
+		delay_s(2);
 		Device_OFF(DEVICE_01);
 		BSP_Printf("Power: %d Busy: %d Working: %d\n", Device_Power_Status(DEVICE_01), isDevBusy(DEVICE_01), isDevWorking(DEVICE_01));
-		delay_s(10);		
+		delay_s(2);		
 	}
-*/
+#endif
 
 #if 0  //for usart2 test
 	u8 cmd[2]={0x12, 0x34};
@@ -143,9 +158,11 @@ int main(void)
 
 	BSP_Printf("YR4GC Send Login\r\n");
 
-	TIM6_Int_Init(29999,2399);						     // 1s中断
-	TIM_SetCounter(TIM6,0); 
-	TIM_Cmd(TIM6,ENABLE);
+	//TIM_General_Init(29999,2399);						     // 1s中断
+	//TIM_General_Init(3999,1999);
+	TIM_General_Set(10);
+	TIM_SetCounter(TIM_GENERAL,0); 
+	TIM_Cmd(TIM_GENERAL,ENABLE);
 	
 	while(1)
 	{		

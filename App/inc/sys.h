@@ -70,4 +70,9 @@ void INTX_DISABLE(void);//关闭所有中断
 void INTX_ENABLE(void);	//开启所有中断
 void MSR_MSP(u32 addr);	//设置堆栈地址
 
+#define DEV_STM32F103CB   1
+//#define DEV_STM32F103ZE   0
+
+#define INTERNAL_CLOCK  0
+
 #endif
