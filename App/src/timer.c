@@ -34,7 +34,7 @@ void TIM_General_IRQHandler(void)
 {
 	u8 index;
 	//BSP_Printf("dev.hb_timer %d\n", dev.hb_timer);
-#if 1
+#if CLOCK_TEST
 	BSP_Printf("Ãë¶¨Ê±Æ÷: %d\n", dev.hb_timer++);
 	TIM_ClearITPendingBit(TIM_GENERAL, TIM_IT_Update); 
 	TIM_SetCounter(TIM_GENERAL,0);

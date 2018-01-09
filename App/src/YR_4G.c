@@ -237,17 +237,17 @@ extern void Reset_Device_Status(u8 status);
 const char *msg_id[MSG_STR_ID_MAX]={"00", "01", "02", "03"};
 const char *msg_device="100";
 
-#define LINKA_PIN                         GPIO_Pin_11
-#define LINKA_GPIO_PORT                   GPIOF
-#define LINKA_GPIO_PORT_CLK               RCC_APB2Periph_GPIOF
+#define LINKA_PIN                         GPIO_Pin_5
+#define LINKA_GPIO_PORT                   GPIOA
+#define LINKA_GPIO_PORT_CLK               RCC_APB2Periph_GPIOA
 
 #define LINKB_PIN                         GPIO_Pin_12
 #define LINKB_GPIO_PORT                   GPIOF
 #define LINKB_GPIO_PORT_CLK               RCC_APB2Periph_GPIOF
 
-#define WORK_PIN                         GPIO_Pin_13
-#define WORK_GPIO_PORT                   GPIOF
-#define WORK_GPIO_PORT_CLK               RCC_APB2Periph_GPIOF
+#define WORK_PIN                         GPIO_Pin_7
+#define WORK_GPIO_PORT                   GPIOA
+#define WORK_GPIO_PORT_CLK               RCC_APB2Periph_GPIOA
 
 #define RESET_PIN                         GPIO_Pin_9
 #define RESET_GPIO_PORT                   GPIOB
@@ -264,8 +264,8 @@ void YR4G_Port_Init(void)
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;		 
 	GPIO_Init(RESET_GPIO_PORT, &GPIO_InitStructure);					
 
-	GPIO_InitStructure.GPIO_Pin = LINKA_PIN | LINKB_PIN | WORK_PIN;	
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING; 
+	GPIO_InitStructure.GPIO_Pin = LINKA_PIN | WORK_PIN;	
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD; 
 	GPIO_Init(LINKA_GPIO_PORT, &GPIO_InitStructure);
 }
 
@@ -287,8 +287,8 @@ void trimStr(char *dst, char *src, u8 ackId)
 
 bool isWorking(void)
 {
-	return TRUE;
-	//return (GPIO_ReadOutputDataBit(WORK_GPIO_PORT, WORK_PIN)==0?TRUE:FALSE);
+	//return TRUE;
+    	return (GPIO_ReadInputDataBit(WORK_GPIO_PORT, WORK_PIN)==1?TRUE:FALSE);	
 }
 
 char *DumpQueue(char * recv)

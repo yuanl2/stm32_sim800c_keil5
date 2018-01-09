@@ -101,13 +101,35 @@ int main(void)
 	Device_Init();
 	//Device_ON(DEVICE_01);
 	//Device_ON(DEVICE_04);
+	
+#if GPIO_TEST
+	while(1)
+	{	
+		Device_ON(DEVICE_01);
+		delay_s(1);  
+        BSP_Printf("2: %d 3: %d 4: %d\n", Device_Power_Status(DEVICE_01),
+        GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_3),
+        GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_4));		
+		//BSP_Printf("Power: %d Busy: %d Working: %d\n", Device_Power_Status(DEVICE_01), isDevBusy(DEVICE_01), isDevWorking(DEVICE_01));
+		delay_s(5);
+		Device_OFF(DEVICE_01);	
+		delay_s(1);
+		//BSP_Printf("Power: %d Busy: %d Working: %d\n", Device_Power_Status(DEVICE_01), isDevBusy(DEVICE_01), isDevWorking(DEVICE_01));
+        BSP_Printf("2: %d 3: %d 4: %d\n", Device_Power_Status(DEVICE_01),
+        GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_3),
+        GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_4));	
+		delay_s(5);
+		
+	}
+#endif
+
 	BSP_Printf("\n\nSW VERSION: %s Clock: %d\n\n", SW_VERSION, SystemCoreClock);
 	for(i=DEVICE_01; i<DEVICEn; i++)
 	{
 		BSP_Printf("Power[%d]: %d\n", i, Device_Power_Status(i));
 	}
 
-#if 1
+#if CLOCK_TEST
 	//TIM_General_Init(29999,2399);						     // 1sÖÐ¶Ï
 	//TIM_General_Init(3999,1999);						     // 1sÖÐ¶Ï	
 	TIM_General_Set(1000);
@@ -121,16 +143,6 @@ int main(void)
 			BSP_Printf("[%0.2d:%0.2d:%0.2d]\n", i / 3600, (i % 3600) / 60, (i % 3600) % 60);		
 			dev.hb_timer = 0;
 		}
-	}
-	
-	while(1)
-	{
-		Device_ON(DEVICE_01);
-		BSP_Printf("Power: %d Busy: %d Working: %d\n", Device_Power_Status(DEVICE_01), isDevBusy(DEVICE_01), isDevWorking(DEVICE_01));
-		delay_s(2);
-		Device_OFF(DEVICE_01);
-		BSP_Printf("Power: %d Busy: %d Working: %d\n", Device_Power_Status(DEVICE_01), isDevBusy(DEVICE_01), isDevWorking(DEVICE_01));
-		delay_s(2);		
 	}
 #endif
 
@@ -160,7 +172,7 @@ int main(void)
 
 	//TIM_General_Init(29999,2399);						     // 1sÖÐ¶Ï
 	//TIM_General_Init(3999,1999);
-	TIM_General_Set(10);
+	TIM_General_Set(1000);
 	TIM_SetCounter(TIM_GENERAL,0); 
 	TIM_Cmd(TIM_GENERAL,ENABLE);
 	

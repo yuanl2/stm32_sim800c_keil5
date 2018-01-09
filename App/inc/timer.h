@@ -6,9 +6,8 @@
 //常规的心跳包间隔是1分钟到10分钟
 #define TIME_HEART 1
 #define TIME_REPLY 1
-#define NUMBER_TIME_HEART_50_MS (TIME_HEART*60*1000/50)  	  //1MIN
-#define HB_1_MIN (TIME_HEART*60)  	  //1MIN
-#define REPLY_1_MIN (TIME_REPLY*60)  	  //1MIN
+#define HB_1_MIN (TIME_HEART*60-1)  	  //1MIN
+#define REPLY_1_MIN (TIME_REPLY*60-1)  	  //1MIN
 
 #define NUMBER_TIMER_1_MINUTE       60
 #define NUMBER_MSG_MAX_RETRY        5

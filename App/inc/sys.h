@@ -74,5 +74,6 @@ void MSR_MSP(u32 addr);	//…Ë÷√∂—’ªµÿ÷∑
 //#define DEV_STM32F103ZE   0
 
 #define INTERNAL_CLOCK  0
-
+#define CLOCK_TEST    0
+#define GPIO_TEST  1
 #endif

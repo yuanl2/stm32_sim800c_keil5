@@ -58,7 +58,7 @@ void Device_Init(void)
  
 	GPIO_InitTypeDef  GPIO_InitStructure;
 #if TEST 	
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOG, ENABLE);	 
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);	 
 
 	GPIO_InitStructure.GPIO_Pin = DEVICE_PIN;				 
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		
@@ -67,7 +67,7 @@ void Device_Init(void)
 	Device_OFF(DEVICE_01);
 
 	GPIO_InitStructure.GPIO_Pin = DEVICE_BUSY_PIN | DEVICE_STATUS_PIN;	
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; 
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD; 
 	GPIO_Init(DEVICE_BUSY_GPIO_PORT, &GPIO_InitStructure);
 #else
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);	
