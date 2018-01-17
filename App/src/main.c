@@ -33,9 +33,9 @@
 #include "queue.h"
 #include "rtc.h"
 
-////////////////////////ST¹Ù·½³ÌÐò¿ò¼ÜÐèÒªµÄ±äÁ¿ºÍº¯Êý///////////////////////////////////////////
+////////////////////////STï¿½Ù·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½Ä±ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½ï¿½///////////////////////////////////////////
 
-/**********************³ÌÐòÖÐ¶ÏÓÅÏÈ¼¶ÉèÖÃ******************************************  
+/**********************ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½È¼ï¿½ï¿½ï¿½ï¿½ï¿½******************************************  
                 PreemptionPriority        SubPriority
 USART3                 0											0
 
@@ -49,7 +49,7 @@ TIM4                   3                      1
 
 ************************************************************************************/
 
-////////////////////////ÓÃ»§³ÌÐò×Ô¶¨ÒåµÄ±äÁ¿ºÍº¯Êý///////////////////////////////////////////
+////////////////////////ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½ï¿½///////////////////////////////////////////
 void Reset_Device_Status(void)
 {
 	dev.is_login = FALSE;
@@ -71,7 +71,7 @@ int main(void)
 	u8 sum = 0;
 	u8 sum_msg = 0;	
 	MsgSrv *msgSrv=NULL;
-	//ÉèÖÃÖÐ¶ÏÓÅÏÈ¼¶·Ö×éÎª×é2£º2Î»ÇÀÕ¼ÓÅÏÈ¼¶£¬2Î»ÏìÓ¦ÓÅÏÈ¼¶
+	//ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½È¼ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½2ï¿½ï¿½2Î»ï¿½ï¿½Õ¼ï¿½ï¿½ï¿½È¼ï¿½ï¿½ï¿½2Î»ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½È¼ï¿½
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); 
 	/* Enable GPIOx Clock */
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR, ENABLE);
@@ -86,13 +86,13 @@ int main(void)
 	delay_init();
 
 #ifdef LOG_ENABLE	
-	//×¢Òâ´®¿Ú1½ö½öÓÃÀ´·¢ËÍ£¬½ÓÊÕµÄºêÃ»ÓÐÊ¹ÄÜ
-	//#define EN_USART1_RX 			   0		//Ê¹ÄÜ£¨1£©/½ûÖ¹£¨0£©´®¿Ú1½ÓÊÕ
-	usart1_init(115200);                            //´®¿Ú1,Log
+	//×¢ï¿½â´®ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í£ï¿½ï¿½ï¿½ï¿½ÕµÄºï¿½Ã»ï¿½ï¿½Ê¹ï¿½ï¿½
+	//#define EN_USART1_RX 			   0		//Ê¹ï¿½Ü£ï¿½1ï¿½ï¿½/ï¿½ï¿½Ö¹ï¿½ï¿½0ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½
+	usart1_init(115200);                            //ï¿½ï¿½ï¿½ï¿½1,Log
 #endif
 
-	//usart2_init(9600);                            //´®¿Ú2,¶Ô½ÓÍâÉè
-	usart3_init(115200);                            //´®¿Ú3,¶Ô½ÓYR4G
+	//usart2_init(9600);                            //ï¿½ï¿½ï¿½ï¿½2,ï¿½Ô½ï¿½ï¿½ï¿½ï¿½ï¿½
+	usart3_init(115200);                            //ï¿½ï¿½ï¿½ï¿½3,ï¿½Ô½ï¿½YR4G
 
 	rtc_init();	
 	Reset_Device_Status();
@@ -107,17 +107,15 @@ int main(void)
 	{	
 		Device_ON(DEVICE_01);
 		delay_s(1);  
-        BSP_Printf("2: %d 3: %d 4: %d\n", Device_Power_Status(DEVICE_01),
-        GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_3),
-        GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_4));		
-		//BSP_Printf("Power: %d Busy: %d Working: %d\n", Device_Power_Status(DEVICE_01), isDevBusy(DEVICE_01), isDevWorking(DEVICE_01));
+		BSP_Printf("2: %d 3: %d 4: %d\n", Device_Power_Status(DEVICE_01),
+        	GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_3), GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_4));		
+		BSP_Printf("Power: %d Busy: %d Working: %d\n", Device_Power_Status(DEVICE_01), isDevBusy(DEVICE_01), isDevWorking(DEVICE_01));
 		delay_s(5);
 		Device_OFF(DEVICE_01);	
 		delay_s(1);
-		//BSP_Printf("Power: %d Busy: %d Working: %d\n", Device_Power_Status(DEVICE_01), isDevBusy(DEVICE_01), isDevWorking(DEVICE_01));
-        BSP_Printf("2: %d 3: %d 4: %d\n", Device_Power_Status(DEVICE_01),
-        GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_3),
-        GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_4));	
+		BSP_Printf("2: %d 3: %d 4: %d\n", Device_Power_Status(DEVICE_01),
+        	GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_3), GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_4));	
+		BSP_Printf("Power: %d Busy: %d Working: %d\n", Device_Power_Status(DEVICE_01), isDevBusy(DEVICE_01), isDevWorking(DEVICE_01));
 		delay_s(5);
 		
 	}
@@ -130,8 +128,8 @@ int main(void)
 	}
 
 #if CLOCK_TEST
-	//TIM_General_Init(29999,2399);						     // 1sÖÐ¶Ï
-	//TIM_General_Init(3999,1999);						     // 1sÖÐ¶Ï	
+	//TIM_General_Init(29999,2399);						     // 1sï¿½Ð¶ï¿½
+	//TIM_General_Init(3999,1999);						     // 1sï¿½Ð¶ï¿½	
 	TIM_General_Set(1000);
 	TIM_SetCounter(TIM_GENERAL,0); 
 	TIM_Cmd(TIM_GENERAL,ENABLE);
@@ -156,7 +154,7 @@ int main(void)
 #endif
 
 	YR4G_ResetRestart();
-	BSP_Printf("YR4GC¿ª»úÍê³É\r\n");
+	BSP_Printf("YR4GCï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\r\n");
 	
 	while(!YR4G_Link_Server())
 	{
@@ -170,7 +168,7 @@ int main(void)
 
 	BSP_Printf("YR4GC Send Login\r\n");
 
-	//TIM_General_Init(29999,2399);						     // 1sÖÐ¶Ï
+	//TIM_General_Init(29999,2399);						     // 1sï¿½Ð¶ï¿½
 	//TIM_General_Init(3999,1999);
 	TIM_General_Set(1000);
 	TIM_SetCounter(TIM_GENERAL,0); 
@@ -235,17 +233,17 @@ int main(void)
 				{
 					if((p1=strstr((const char*)p,"#"))!=NULL)
 					{
-						//µ÷ÓÃÒì»òºÍº¯ÊýÀ´Ð£Ñé»ØÎÄ	
+						//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½	
 						length = p1 - p +1;
-						//Ð£ÑéÊý¾Ý
+						//Ð£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 						sum = CheckSum((char *)(p),length-5);
 						BSP_Printf("sum:%d\r\n",sum);
 						
-						//È¡×Ö·û´®ÖÐµÄÐ£ÑéÖµ,Ð£ÑéÖµ×ª»¯ÎªÊý×Ö£¬²¢´òÓ¡
+						//È¡ï¿½Ö·ï¿½ï¿½ï¿½ï¿½Ðµï¿½Ð£ï¿½ï¿½Öµ,Ð£ï¿½ï¿½Öµ×ªï¿½ï¿½Îªï¿½ï¿½ï¿½Ö£ï¿½ï¿½ï¿½ï¿½ï¿½Ó¡
 						sum_msg = atoi((const char *)(p+length-5));	
 						BSP_Printf("sum_msg:%d\r\n",sum_msg);
 						
-						//»ØÎÄÕýÈ·
+						//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È·
 						if(sum == sum_msg)
 						{
 							msgSrv = (MsgSrv *)p;						
@@ -280,8 +278,8 @@ int main(void)
 									bool interface_on[DEVICEn]={FALSE};
 									int period_on[DEVICEn]={0};
 									bool alreadySet = FALSE;
-									//¸ù¾Ýµ±Ç°Éè±¸×´Ì¬½øÐÐ¿ªÆô(GPIO)£¬ÒÑ¾­¿ªÁËµÄ¾Í²»´¦ÀíÁË
-									//¿ªÆôÉè±¸²¢±¾µØ¼ÆÊ±
+									//ï¿½ï¿½ï¿½Ýµï¿½Ç°ï¿½è±¸×´Ì¬ï¿½ï¿½ï¿½Ð¿ï¿½ï¿½ï¿½(GPIO)ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ËµÄ¾Í²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+									//ï¿½ï¿½ï¿½ï¿½ï¿½è±¸ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½Ê±
 									interfaces = strtok(p+sizeof(MsgSrv), ",");
 									if(interfaces)
 									{						
@@ -317,7 +315,9 @@ int main(void)
 									{
 										if(interface_on[i]){
 #if TEST										
-											if(!isDevWorking(i) || isDevBusy(i))
+											//if(!isDevWorking(i) || isDevBusy(i))
+											//if(!isDevWorking(i))
+											if(0)
 											{						
 												BSP_Printf("Wrong Status\n");	
 											}												

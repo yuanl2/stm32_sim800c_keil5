@@ -30,16 +30,16 @@ enum
 	DEVICE_01 = 0,
 	DEVICEn,
 };
-
+//F1 ~ 12
 #define DEVICE_PIN                         GPIO_Pin_2
 #define DEVICE_GPIO_PORT                   GPIOA
 #define DEVICE_GPIO_PORT_CLK               RCC_APB2Periph_GPIOA
-
-#define DEVICE_BUSY_PIN                         GPIO_Pin_3
+//F3 ~ 14
+#define DEVICE_BUSY_PIN                         GPIO_Pin_4
 #define DEVICE_BUSY_GPIO_PORT                   GPIOA
 #define DEVICE_BUSY_GPIO_PORT_CLK               RCC_APB2Periph_GPIOA
-
-#define DEVICE_STATUS_PIN                         GPIO_Pin_4
+//F2 ~ 13
+#define DEVICE_STATUS_PIN                         GPIO_Pin_3
 #define DEVICE_STATUS_GPIO_PORT                   GPIOA
 #define DEVICE_STATUS_GPIO_PORT_CLK               RCC_APB2Periph_GPIOA
 

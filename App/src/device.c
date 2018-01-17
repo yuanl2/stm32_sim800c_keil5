@@ -67,7 +67,7 @@ void Device_Init(void)
 	Device_OFF(DEVICE_01);
 
 	GPIO_InitStructure.GPIO_Pin = DEVICE_BUSY_PIN | DEVICE_STATUS_PIN;	
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD; 
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; 
 	GPIO_Init(DEVICE_BUSY_GPIO_PORT, &GPIO_InitStructure);
 #else
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);	
@@ -123,9 +123,9 @@ void Device_ON(u8 Device)
 
 /*
 *********************************************************************************************************
-*	º¯ Êý Ãû: Is_Device_On
-*	¹¦ÄÜËµÃ÷: ÅÐ¶ÏDeviceÊÇ·ñÒÑ¾­¿ªÆô
-*	·µ »Ø Öµ: 1±íÊ¾ÒÑ¾­¿ªÆô£¬0±íÊ¾Î´¿ªÆô,2±íÊ¾µ÷ÓÃ²ÎÊý²»¶Ô
+*	ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½: Is_Device_On
+*	ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½: ï¿½Ð¶ï¿½Deviceï¿½Ç·ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½
+*	ï¿½ï¿½ ï¿½ï¿½ Öµ: 1ï¿½ï¿½Ê¾ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½0ï¿½ï¿½Ê¾Î´ï¿½ï¿½ï¿½ï¿½,2ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½Ã²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 *********************************************************************************************************
 */
 
@@ -206,7 +206,7 @@ void Device_GPIO_Status(char *buf)
 }
 
 u8 CheckSum(char* pBuf, u16 len);
-//waittime:µÈ´ýÊ±¼ä(µ¥Î»:10ms)
+//waittime:ï¿½È´ï¿½Ê±ï¿½ï¿½(ï¿½ï¿½Î»:10ms)
 bool Device_SendCmd(u8 *cmd, u8 len, u8 *recv, u16 waittime)
 {
 	bool ret = FALSE; 
@@ -221,7 +221,7 @@ bool Device_SendCmd(u8 *cmd, u8 len, u8 *recv, u16 waittime)
 	Clear_Usart2();
 	u2_msg((u8 *)msg, sizeof(t_Msg)+len);
 	
-	while(waittime!=0)	//µÈ´ýµ¹¼ÆÊ±
+	while(waittime!=0)	//ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½Ê±
 	{ 
 		delay_ms(20);
 		if((USART2_RX_STA&(1<<15)) != 0)
